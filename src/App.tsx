@@ -30,6 +30,7 @@ import Abastecimento from "./pages/Abastecimento";
 import MediasAbastecimento from "./pages/MediasAbastecimento";
 import Inicio from "./pages/Inicio";
 import Minerva from "./pages/Minerva";
+import JBS from "./pages/JBS";
 import ContasAPagar from "./pages/ContasAPagar";
 import SgtWorkspace from "./pages/SgtWorkspace";
 
@@ -81,10 +82,7 @@ const App = () => {
                 <Route path="/cliente/martin-brower" element={<MartinBrower />} />
                 <Route path="/cliente/danone" element={<Danone />} />
                 <Route path="/cliente/platlog" element={<Platlog />} />
-                <Route
-                  path="/cliente/jbs"
-                  element={<ClientePlaceholder clientName="JBS" />}
-                />
+                <Route path="/cliente/jbs" element={<JBS />} />
                 <Route path="/cliente/natura" element={<Natura />} />
                 <Route path="/sgt" element={<SgtWorkspace />} />
               </Route>
