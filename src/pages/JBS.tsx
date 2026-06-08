@@ -79,6 +79,8 @@ type Summary = {
   adicionadoCount: number;
   ndCount: number;
   pendingCount: number;
+  allBalanced: boolean;
+  importacaoCount: number;
 };
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
@@ -360,7 +362,24 @@ const STATUS_LABEL: Record<DocStatus, string> = {
   pendente: "PENDENTE",
 };
 
-const buildOutputWorkbook = (groups: FilialGroup[], allOriginalRows: JBSRow[]) => {
+const buildImportSheet = (groups: FilialGroup[]) => {
+  const headers = ["FILIAL", "SERIE", "N DOC", "TIPO DOCUMENTO", "VALOR PAGO"];
+
+  const importRows = groups
+    .flatMap((g) => g.rows)
+    .filter((r) => isNumericDoc(r.documentoFrete) && r.saldo385Final != null && r.saldo385Final > 0)
+    .map((r) => [1, 0, r.documentoRodopar, "CTRC", r.saldo385Final]);
+
+  const sheet = XLSX.utils.aoa_to_sheet([headers, ...importRows]);
+  sheet["!cols"] = [{ wch: 10 }, { wch: 8 }, { wch: 18 }, { wch: 18 }, { wch: 16 }];
+  return { sheet, count: importRows.length };
+};
+
+const buildOutputWorkbook = (
+  groups: FilialGroup[],
+  allOriginalRows: JBSRow[],
+  allBalanced: boolean
+) => {
   const wb = XLSX.utils.book_new();
 
   // ── Aba 1: Processado ──
@@ -435,6 +454,12 @@ const buildOutputWorkbook = (groups: FilialGroup[], allOriginalRows: JBSRow[]) =
   const backupSheet = XLSX.utils.aoa_to_sheet([backupHeaders, ...backupData]);
   backupSheet["!cols"] = backupHeaders.map(() => ({ wch: 22 }));
   XLSX.utils.book_append_sheet(wb, backupSheet, "Backup");
+
+  // ── Aba 3: Importação (somente se tudo estiver balanceado) ──
+  if (allBalanced) {
+    const { sheet: importSheet } = buildImportSheet(groups);
+    XLSX.utils.book_append_sheet(wb, importSheet, "Importacao");
+  }
 
   return wb;
 };
@@ -567,8 +592,14 @@ const JBS = () => {
       const ndCount = all.filter((r) => r.docStatus === "nd").length;
       const pendingCount = all.filter((r) => r.docStatus === "pendente").length;
 
+      // Verifica se todos os grupos estão balanceados → libera importação
+      const allBalanced = groups.every((g) => g.isBalanced);
+      const { count: importacaoCount } = allBalanced
+        ? buildImportSheet(groups)
+        : { count: 0 };
+
       // Gera Excel e faz download
-      const wb = buildOutputWorkbook(groups, allRows);
+      const wb = buildOutputWorkbook(groups, allRows, allBalanced);
       XLSX.writeFile(wb, `jbs-processado-${selectedDate}.xlsx`);
 
       setSummary({
@@ -581,6 +612,8 @@ const JBS = () => {
         adicionadoCount,
         ndCount,
         pendingCount,
+        allBalanced,
+        importacaoCount,
       });
 
       toast.success("Processamento concluído. Planilha gerada!");
@@ -882,6 +915,27 @@ const JBS = () => {
                   <p className="mt-1 text-sm text-white/50">
                     {summary.groups.length} instrução(ões) filial processada(s)
                   </p>
+
+                  {/* Status da importação */}
+                  <div className="mt-4">
+                    {summary.allBalanced ? (
+                      <div className="inline-flex items-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-300" />
+                        <span className="text-sm font-semibold text-emerald-300">
+                          Conferência OK — planilha de importação gerada com{" "}
+                          {summary.importacaoCount} documento(s)
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center gap-2 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-2.5">
+                        <AlertTriangle className="h-4 w-4 text-amber-300" />
+                        <span className="text-sm font-semibold text-amber-300">
+                          Importação pendente — há grupos com valores divergentes
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
                     {[
                       {
