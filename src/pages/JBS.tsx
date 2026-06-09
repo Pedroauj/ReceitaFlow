@@ -691,7 +691,7 @@ const JBS = () => {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_28%)]" />
             <div className="relative p-6 lg:p-7">
               <div className="mb-6 flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/20 bg-violet-500/10 text-violet-400">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/[0.18] text-violet-300">
                   <CalendarDays className="h-5 w-5" />
                 </div>
                 <div>
@@ -757,7 +757,7 @@ const JBS = () => {
                   </div>
                 )}
 
-                <div className="rounded-2xl border border-violet-500/12 bg-violet-500/[0.05] p-4">
+                <div className="rounded-2xl border border-violet-500/20 bg-violet-500/[0.08] p-4">
                   <p className="text-sm leading-7 text-muted-foreground">
                     O sistema filtra pela data, confere o valor total e processa
                     cada Instrução Filial de acordo com os documentos encontrados.
@@ -790,7 +790,7 @@ const JBS = () => {
           <div className="grid gap-6 md:grid-cols-2">
             {/* Gestão Financeira */}
             <label
-              className="relative overflow-hidden rounded-[28px] border border-border bg-card p-6 shadow-[0_14px_40px_rgba(0,0,0,0.22)] cursor-pointer"
+              className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#11131c]/95 p-6 shadow-[0_18px_60px_rgba(0,0,0,0.28)] cursor-pointer"
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
@@ -798,35 +798,35 @@ const JBS = () => {
                 if (f && /\.(xlsx?|xls)$/i.test(f.name)) setJbsFile(f);
               }}
             >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_24%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.14),transparent_32%)]" />
               <div className="relative">
                 <div className="mb-5 flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/20 bg-violet-500/10 text-violet-400">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/[0.18] text-violet-300">
                     <UploadCloud className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-foreground">Gestão Financeira</h2>
-                    <p className="text-sm text-muted-foreground">Planilha do portal JBS.</p>
+                    <h2 className="text-lg font-semibold text-white">Gestão Financeira</h2>
+                    <p className="text-sm text-white/55">Planilha do portal JBS.</p>
                   </div>
                 </div>
-                <div className="rounded-[22px] border border-dashed border-violet-500/15 bg-violet-500/[0.04] px-6 py-14 text-center transition-all duration-200 hover:border-violet-500/30 hover:bg-violet-500/[0.07]">
+                <div className="rounded-[22px] border border-dashed border-violet-400/25 bg-[linear-gradient(180deg,rgba(139,92,246,0.09),rgba(139,92,246,0.03))] px-6 py-14 text-center transition-all duration-200 hover:border-violet-400/45 hover:bg-[linear-gradient(180deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05))]">
                   {jbsFile ? (
                     <div className="flex flex-col items-center gap-4">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-violet-500/20 bg-violet-500/10">
-                        <FileCheck className="h-7 w-7 text-violet-400" />
+                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-violet-400/30 bg-violet-500/[0.18]">
+                        <FileCheck className="h-7 w-7 text-violet-300" />
                       </div>
                       <div>
-                        <p className="text-lg font-semibold text-foreground">{jbsFile.name}</p>
-                        <p className="mt-1 text-sm text-muted-foreground">Clique para trocar.</p>
+                        <p className="text-lg font-semibold text-white">{jbsFile.name}</p>
+                        <p className="mt-1 text-sm text-white/55">Clique para trocar.</p>
                       </div>
                     </div>
                   ) : (
                     <>
-                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-violet-500/15 bg-violet-500/8">
-                        <UploadCloud className="h-8 w-8 text-violet-400" />
+                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-violet-400/25 bg-violet-500/[0.15]">
+                        <UploadCloud className="h-8 w-8 text-violet-300" />
                       </div>
-                      <p className="text-xl font-semibold text-foreground">Selecione o arquivo</p>
-                      <p className="mt-3 text-sm text-muted-foreground">Formatos aceitos: .xlsx e .xls</p>
+                      <p className="text-xl font-semibold text-white">Selecione o arquivo</p>
+                      <p className="mt-3 text-sm text-white/50">Formatos aceitos: .xlsx e .xls</p>
                     </>
                   )}
                 </div>
@@ -841,7 +841,7 @@ const JBS = () => {
 
             {/* Relatório 385 */}
             <label
-              className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#11131c]/95 p-6 shadow-[0_18px_60px_rgba(0,0,0,0.28)] cursor-pointer"
+              className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#11131c]/95 p-6 shadow-[0_18px_60px_rgba(0,0,0,0.28)] cursor-pointer"
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
@@ -849,22 +849,22 @@ const JBS = () => {
                 if (f && /\.(xlsx?|xls)$/i.test(f.name)) setR385File(f);
               }}
             >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.10),transparent_24%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.14),transparent_32%)]" />
               <div className="relative">
                 <div className="mb-5 flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-400/20 bg-violet-500/10 text-violet-200">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/[0.18] text-violet-300">
                     <UploadCloud className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-semibold text-white">Relatório 385</h2>
+                    <h2 className="text-lg font-semibold text-white">Relatório 385</h2>
                     <p className="text-sm text-white/55">Base de conferência do sistema.</p>
                   </div>
                 </div>
-                <div className="rounded-[26px] border border-dashed border-violet-400/20 bg-[linear-gradient(180deg,rgba(139,92,246,0.06),rgba(255,255,255,0.02))] px-6 py-14 text-center transition-all duration-200 hover:border-violet-400/45 hover:bg-[linear-gradient(180deg,rgba(139,92,246,0.12),rgba(255,255,255,0.03))]">
+                <div className="rounded-[22px] border border-dashed border-violet-400/25 bg-[linear-gradient(180deg,rgba(139,92,246,0.09),rgba(139,92,246,0.03))] px-6 py-14 text-center transition-all duration-200 hover:border-violet-400/45 hover:bg-[linear-gradient(180deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05))]">
                   {r385File ? (
                     <div className="flex flex-col items-center gap-4">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-violet-400/25 bg-violet-500/12">
-                        <FileCheck className="h-7 w-7 text-violet-200" />
+                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-violet-400/30 bg-violet-500/[0.18]">
+                        <FileCheck className="h-7 w-7 text-violet-300" />
                       </div>
                       <div>
                         <p className="text-lg font-semibold text-white">{r385File.name}</p>
@@ -873,8 +873,8 @@ const JBS = () => {
                     </div>
                   ) : (
                     <>
-                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-violet-400/20 bg-violet-500/10">
-                        <UploadCloud className="h-8 w-8 text-violet-200" />
+                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-violet-400/25 bg-violet-500/[0.15]">
+                        <UploadCloud className="h-8 w-8 text-violet-300" />
                       </div>
                       <p className="text-xl font-semibold text-white">Selecione o relatório</p>
                       <p className="mt-3 text-sm text-white/50">Formatos aceitos: .xlsx e .xls</p>
