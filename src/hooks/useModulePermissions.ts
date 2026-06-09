@@ -21,15 +21,20 @@ export function useModulePermissions() {
     }
 
     const load = async () => {
-      const [{ data: profile }, { data: perms }] = await Promise.all([
-        supabase.from("profiles").select("role").eq("user_id", user.id).single(),
-        supabase.from("user_module_permissions").select("module_key, can_view, can_edit").eq("user_id", user.id),
-      ]);
+      try {
+        const [{ data: profile }, { data: perms }] = await Promise.all([
+          supabase.from("profiles").select("role").eq("user_id", user.id).single(),
+          supabase.from("user_module_permissions").select("module_key, can_view, can_edit").eq("user_id", user.id),
+        ]);
 
-      const master = profile?.role === "master";
-      setIsMaster(master);
-      setPermissions(perms || []);
-      setLoading(false);
+        const master = profile?.role === "master";
+        setIsMaster(master);
+        setPermissions(perms || []);
+      } catch {
+        setPermissions([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     load();

@@ -27,7 +27,11 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const loginPromise = supabase.auth.signInWithPassword({ email, password });
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("timeout")), 15000)
+      );
+      const { error } = await Promise.race([loginPromise, timeoutPromise]);
       if (error) {
         const isTimeout = error.message?.toLowerCase().includes("timeout") || error.status === 504;
         toast({
@@ -40,10 +44,13 @@ const Login = () => {
       } else {
         navigate("/dashboard", { replace: true });
       }
-    } catch {
+    } catch (err) {
+      const isTimeout = err instanceof Error && err.message === "timeout";
       toast({
-        title: "Erro de conexão",
-        description: "Não foi possível conectar ao servidor. Verifique sua internet e tente novamente.",
+        title: isTimeout ? "Servidor temporariamente indisponível" : "Erro de conexão",
+        description: isTimeout
+          ? "O servidor está demorando para responder. Aguarde alguns segundos e tente novamente."
+          : "Não foi possível conectar ao servidor. Verifique sua internet e tente novamente.",
         variant: "destructive",
       });
     } finally {
