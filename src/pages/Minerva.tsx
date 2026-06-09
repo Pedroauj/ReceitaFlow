@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import * as XLSX from "xlsx";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -16,6 +18,9 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type PreviewRowStatus =
   | "válida"
@@ -328,7 +333,7 @@ const metricValueClass = "mt-2 text-2xl font-semibold tracking-tight text-foregr
 const Minerva = () => {
   const navigate = useNavigate();
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [bankValue, setBankValue] = useState("");
   const [reportFile, setReportFile] = useState<File | null>(null);
   const [planilhaZeroFile, setPlanilhaZeroFile] = useState<File | null>(null);
@@ -349,6 +354,7 @@ const Minerva = () => {
       toast.error("Informe a data antes de processar.");
       return;
     }
+    const dateStr = format(selectedDate, "yyyy-MM-dd");
 
     if (!bankValue.trim()) {
       toast.error("Informe o valor do banco antes de processar.");
@@ -466,7 +472,7 @@ const Minerva = () => {
 
       for (let r = 1; r <= reportRange.e.r; r += 1) {
         const anticipationDate = normalizeDateValue(getCellValue(reportSheet, reportDateCol, r));
-        if (anticipationDate !== selectedDate) continue;
+        if (anticipationDate !== dateStr) continue;
 
         filteredReportRows += 1;
 
@@ -483,7 +489,7 @@ const Minerva = () => {
       const previewRows: PreviewRow[] = [];
       const markerColumn = 11;
       const markerHeader = "Data Antecipação";
-      const markerDate = formatDateBR(selectedDate);
+      const markerDate = formatDateBR(dateStr);
       const bestCandidates = new Map<string, CandidateRow>();
       const duplicatePreviewRows: PreviewRow[] = [];
 
@@ -613,14 +619,14 @@ const Minerva = () => {
       }
 
       const importWorkbook = buildImportWorkbook(importRows, missingDocs);
-      XLSX.writeFile(importWorkbook, `minerva-importacao-${selectedDate}.xlsx`);
+      XLSX.writeFile(importWorkbook, `minerva-importacao-${dateStr}.xlsx`);
 
       const bankValueNumber = parseCurrencyInputToNumber(bankValue);
       const difference = totalProcessed - bankValueNumber;
       const status = Math.abs(difference) < 0.01 ? "ok" : "diverge";
 
       setSummary({
-        selectedDate,
+        selectedDate: dateStr,
         reportRows: filteredReportRows,
         uniqueDocs: docsSet.size,
         matchedRows: importRows.length,
@@ -743,12 +749,31 @@ const Minerva = () => {
                   <label className="mb-2 block text-sm font-medium text-foreground/90">
                     Data da antecipação
                   </label>
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-foreground outline-none transition-colors focus:border-violet-500/40 focus:ring-2 focus:ring-violet-500/10"
-                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button
+                        type="button"
+                        className={cn(
+                          "h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-left flex items-center gap-3 transition-colors hover:border-violet-500/40",
+                          !selectedDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarDays className="h-4 w-4 text-violet-400 shrink-0" />
+                        {selectedDate
+                          ? format(selectedDate, "dd/MM/yyyy", { locale: ptBR })
+                          : "Selecione a data"}
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={setSelectedDate}
+                        locale={ptBR}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div>

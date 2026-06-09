@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import * as XLSX from "xlsx";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -16,6 +18,9 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -504,7 +509,7 @@ const JBS = () => {
 
   const [jbsFile, setJbsFile] = useState<File | null>(null);
   const [r385File, setR385File] = useState<File | null>(null);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [bankValue, setBankValue] = useState("");
   const [processing, setProcessing] = useState(false);
   const [summary, setSummary] = useState<Summary | null>(null);
@@ -527,6 +532,7 @@ const JBS = () => {
       toast.error("Informe a data da antecipação.");
       return;
     }
+    const dateStr = format(selectedDate, "yyyy-MM-dd");
     if (!bankValue.trim()) {
       toast.error("Informe o valor do banco.");
       return;
@@ -556,7 +562,7 @@ const JBS = () => {
       }
 
       const allRows = parseJBS(jbsSheet, map385);
-      const filteredRows = allRows.filter((r) => r.dataAntecipacao === selectedDate);
+      const filteredRows = allRows.filter((r) => r.dataAntecipacao === dateStr);
 
       if (filteredRows.length === 0) {
         throw new Error("Nenhuma linha encontrada para a data informada.");
@@ -600,10 +606,10 @@ const JBS = () => {
 
       // Gera Excel e faz download
       const wb = buildOutputWorkbook(groups, allRows, allBalanced);
-      XLSX.writeFile(wb, `jbs-processado-${selectedDate}.xlsx`);
+      XLSX.writeFile(wb, `jbs-processado-${dateStr}.xlsx`);
 
       setSummary({
-        selectedDate,
+        selectedDate: dateStr,
         bankValue: bankValueNumber,
         totalValorFrete,
         groups,
@@ -707,12 +713,31 @@ const JBS = () => {
                   <label className="mb-2 block text-sm font-medium text-foreground/90">
                     Data da antecipação
                   </label>
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-foreground outline-none transition-colors focus:border-violet-500/40 focus:ring-2 focus:ring-violet-500/10"
-                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button
+                        type="button"
+                        className={cn(
+                          "h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-left flex items-center gap-3 transition-colors hover:border-violet-500/40",
+                          !selectedDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarDays className="h-4 w-4 text-violet-400 shrink-0" />
+                        {selectedDate
+                          ? format(selectedDate, "dd/MM/yyyy", { locale: ptBR })
+                          : "Selecione a data"}
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={setSelectedDate}
+                        locale={ptBR}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div>
