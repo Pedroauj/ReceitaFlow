@@ -46,30 +46,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        try {
-          if (session?.user) {
-            await fetchProfile(session.user.id);
-          } else {
-            setProfile(null);
-          }
-        } finally {
-          setLoading(false);
+        setLoading(false);
+        // Defer Supabase calls to avoid deadlock inside the auth callback
+        if (session?.user) {
+          setTimeout(() => { fetchProfile(session.user.id); }, 0);
+        } else {
+          setProfile(null);
         }
       }
     );
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      try {
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        }
-      } finally {
-        setLoading(false);
+      setLoading(false);
+      if (session?.user) {
+        fetchProfile(session.user.id);
       }
     });
 
