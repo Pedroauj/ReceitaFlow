@@ -742,7 +742,7 @@ const JBS = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-medium text-foreground/90">
-                    Valor banco
+                    Valor Contrato
                   </label>
                   <input
                     type="text"
