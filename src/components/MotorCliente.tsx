@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 const clientColors: Record<string, string> = {
-  "martin-brower": "#D4A64F",
+  "martin-brower": "#818CF8",
   minerva: "#60A5FA",
   danone: "#4ADE80",
   platlog: "#A78BFA",
@@ -141,7 +141,7 @@ const MotorCliente = () => {
 
           <div className="relative grid gap-6 xl:grid-cols-[1.2fr_420px]">
             <div className="min-w-0">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-medium tracking-wide text-primary">
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-[11px] font-medium tracking-wide text-violet-400">
                 <Sparkles className="h-3.5 w-3.5" />
                 Gestão centralizada de clientes
               </div>
@@ -166,7 +166,7 @@ const MotorCliente = () => {
                       <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
                         {stat.label}
                       </span>
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400">
                         <stat.icon className="h-4 w-4" />
                       </div>
                     </div>
@@ -192,7 +192,7 @@ const MotorCliente = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Buscar cliente..."
-                  className="h-12 w-full rounded-2xl border border-white/10 bg-black/20 pl-11 pr-4 text-sm text-white outline-none transition-all placeholder:text-slate-500 focus:border-primary/35 focus:ring-2 focus:ring-primary/15"
+                  className="h-12 w-full rounded-2xl border border-white/10 bg-black/20 pl-11 pr-4 text-sm text-white outline-none transition-all placeholder:text-slate-500 focus:border-violet-500/35 focus:ring-2 focus:ring-violet-500/15"
                 />
               </div>
 
@@ -234,7 +234,7 @@ const MotorCliente = () => {
                 key={client.id}
                 type="button"
                 onClick={() => navigate(client.route)}
-                className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(20,24,37,0.98)_0%,rgba(14,17,28,0.98)_100%)] p-5 text-left transition-all duration-200 hover:-translate-y-[3px] hover:border-primary/20 hover:shadow-[0_18px_50px_rgba(0,0,0,0.28)]"
+                className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(20,24,37,0.98)_0%,rgba(14,17,28,0.98)_100%)] p-5 text-left transition-all duration-200 hover:-translate-y-[3px] hover:border-violet-500/20 hover:shadow-[0_18px_50px_rgba(0,0,0,0.28)]"
               >
                 <div
                   className="pointer-events-none absolute inset-0 opacity-[0.14] transition-opacity duration-200 group-hover:opacity-[0.2]"
@@ -262,7 +262,7 @@ const MotorCliente = () => {
                           <p className="truncate text-base font-semibold text-white">
                             {client.name}
                           </p>
-                          <span className="rounded-full border border-primary/15 bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                          <span className="rounded-full border border-violet-500/15 bg-violet-500/10 px-2 py-0.5 text-[10px] font-medium text-violet-400">
                             Top {index + 1}
                           </span>
                         </div>
@@ -272,8 +272,8 @@ const MotorCliente = () => {
                       </div>
                     </div>
 
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/8 bg-white/[0.04] transition-all duration-200 group-hover:border-primary/25 group-hover:bg-primary/10">
-                      <ArrowRight className="h-4 w-4 text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/8 bg-white/[0.04] transition-all duration-200 group-hover:border-violet-500/25 group-hover:bg-violet-500/10">
+                      <ArrowRight className="h-4 w-4 text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-violet-400" />
                     </div>
                   </div>
 
@@ -325,7 +325,7 @@ const MotorCliente = () => {
                     key={client.id}
                     type="button"
                     onClick={() => navigate(client.route)}
-                    className="group rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-left transition-all duration-200 hover:-translate-y-[2px] hover:border-primary/18 hover:bg-white/[0.05]"
+                    className="group rounded-[22px] border border-white/8 bg-white/[0.03] p-4 text-left transition-all duration-200 hover:-translate-y-[2px] hover:border-violet-500/18 hover:bg-white/[0.05]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-start gap-3">
@@ -353,8 +353,8 @@ const MotorCliente = () => {
                         </div>
                       </div>
 
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/8 bg-black/20 transition-all duration-200 group-hover:border-primary/20 group-hover:bg-primary/10">
-                        <ArrowRight className="h-4 w-4 text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/8 bg-black/20 transition-all duration-200 group-hover:border-violet-500/20 group-hover:bg-violet-500/10">
+                        <ArrowRight className="h-4 w-4 text-slate-400 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-violet-400" />
                       </div>
                     </div>
                   </button>
@@ -378,7 +378,7 @@ const MotorCliente = () => {
           >
             <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(16,20,32,0.98)_0%,rgba(10,13,22,0.98)_100%)] p-5">
               <div className="mb-4 flex items-center gap-2">
-                <Activity className="h-4 w-4 text-primary" />
+                <Activity className="h-4 w-4 text-violet-400" />
                 <h3 className="text-sm font-semibold text-white">Resumo operacional</h3>
               </div>
 
