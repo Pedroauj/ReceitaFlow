@@ -49,8 +49,13 @@ const NAV_MODULES: NavModule[] = [
 const DashboardLayout = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const mainRef = useRef<HTMLElement | null>(null);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const notifRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -73,17 +78,30 @@ const DashboardLayout = () => {
     });
   }, [canView, isMaster]);
 
+  const filteredModules = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return visibleModules;
+    return visibleModules.filter(
+      (m) =>
+        m.label.toLowerCase().includes(q) || m.path.toLowerCase().includes(q)
+    );
+  }, [visibleModules, searchQuery]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!userMenuRef.current) return;
-      if (!userMenuRef.current.contains(event.target as Node)) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
+        setNotificationsOpen(false);
       }
     };
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setUserMenuOpen(false);
+        setSearchOpen(false);
+        setNotificationsOpen(false);
       }
     };
 
@@ -98,7 +116,32 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     setUserMenuOpen(false);
+    setNotificationsOpen(false);
   }, [location.pathname]);
+
+  // Ctrl+K / Cmd+K abre a busca rápida
+  useEffect(() => {
+    const handleKShortcut = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+        setNotificationsOpen(false);
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKShortcut);
+    return () => document.removeEventListener("keydown", handleKShortcut);
+  }, []);
+
+  // Foca o input quando o modal de busca abre; limpa quando fecha
+  useEffect(() => {
+    if (searchOpen) {
+      const t = setTimeout(() => searchInputRef.current?.focus(), 60);
+      return () => clearTimeout(t);
+    } else {
+      setSearchQuery("");
+    }
+  }, [searchOpen]);
 
   const isRouteActive = (path: string) => {
     if (path === "/dashboard") {
@@ -399,13 +442,52 @@ const DashboardLayout = () => {
                 </nav>
 
                 <div className="flex items-center gap-2">
-                  <button type="button" className="rf-icon-btn hidden sm:inline-flex">
+                  <button
+                    type="button"
+                    className="rf-icon-btn hidden sm:inline-flex"
+                    title="Busca rápida (Ctrl+K)"
+                    onClick={() => {
+                      setSearchOpen(true);
+                      setNotificationsOpen(false);
+                      setUserMenuOpen(false);
+                    }}
+                  >
                     <Search className="h-4 w-4" />
                   </button>
 
-                  <button type="button" className="rf-icon-btn hidden sm:inline-flex">
-                    <Bell className="h-4 w-4" />
-                  </button>
+                  <div ref={notifRef} className="relative hidden sm:block">
+                    <button
+                      type="button"
+                      className="rf-icon-btn"
+                      title="Notificações"
+                      onClick={() => {
+                        setNotificationsOpen((prev) => !prev);
+                        setUserMenuOpen(false);
+                      }}
+                    >
+                      <Bell className="h-4 w-4" />
+                    </button>
+
+                    <AnimatePresence>
+                      {notificationsOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 6, scale: 0.985 }}
+                          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                          className="rf-dropdown absolute right-0 top-[46px] z-[999] w-[300px] rounded-[18px] p-3"
+                        >
+                          <div className="mb-1 flex items-center justify-between px-1.5 py-1">
+                            <p className="text-[13px] font-bold text-white/80">Notificações</p>
+                          </div>
+                          <div className="flex flex-col items-center gap-2 py-7">
+                            <Bell className="h-8 w-8 text-white/18" />
+                            <p className="text-[13px] text-white/38">Nenhuma notificação</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
                   <div ref={userMenuRef} className="relative">
                     <button
@@ -531,6 +613,96 @@ const DashboardLayout = () => {
           </div>
         </header>
       )}
+
+      {/* ── Modal de busca rápida ────────────────────────────────────────── */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-[14vh]"
+            style={{ background: "rgba(0,0,0,0.58)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setSearchOpen(false);
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -14, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.97 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-[540px] overflow-hidden rounded-[20px] border border-white/10 shadow-[0_32px_80px_rgba(0,0,0,0.56)]"
+              style={{
+                background:
+                  "linear-gradient(180deg,rgba(18,22,33,0.99),rgba(11,14,23,0.99))",
+              }}
+            >
+              {/* Input */}
+              <div className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
+                <Search className="h-4 w-4 shrink-0 text-white/40" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Buscar páginas…"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 bg-transparent text-[15px] text-white placeholder-white/35 outline-none"
+                />
+                <kbd className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[11px] font-medium text-white/35">
+                  ESC
+                </kbd>
+              </div>
+
+              {/* Resultados */}
+              <div className="max-h-[360px] overflow-y-auto p-2">
+                {filteredModules.length === 0 ? (
+                  <p className="py-8 text-center text-[13px] text-white/35">
+                    Nenhum resultado
+                  </p>
+                ) : (
+                  filteredModules.map((mod) => {
+                    const Icon = mod.icon;
+                    return (
+                      <button
+                        key={mod.key}
+                        type="button"
+                        onClick={() => {
+                          navigate(mod.path);
+                          setSearchOpen(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-[12px] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.06]"
+                      >
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/[0.07]">
+                          <Icon className="h-4 w-4 text-white/65" />
+                        </div>
+                        <div>
+                          <p className="text-[14px] font-semibold text-white/90">
+                            {mod.label}
+                          </p>
+                          <p className="text-[11px] text-white/35">{mod.path}</p>
+                        </div>
+                        <div className="ml-auto shrink-0">
+                          <kbd className="rounded border border-white/8 bg-white/5 px-1.5 py-0.5 text-[10px] text-white/28">
+                            ↵
+                          </kbd>
+                        </div>
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Rodapé */}
+              <div className="flex items-center gap-2 border-t border-white/6 px-4 py-2">
+                <span className="text-[11px] text-white/28">Navegação rápida</span>
+                <span className="ml-auto text-[11px] text-white/22">Ctrl+K para abrir</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main
         ref={mainRef}
