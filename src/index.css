@@ -15,8 +15,8 @@
     --popover: 240 3% 12%;
     --popover-foreground: 60 33% 95%;
 
-    --primary: 40 70% 50%;
-    --primary-foreground: 40 10% 6%;
+    --primary: 263 70% 65%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4% 14%;
     --secondary-foreground: 48 3% 52%;
@@ -38,18 +38,18 @@
 
     --border: 240 5% 17%;
     --input: 240 5% 17%;
-    --ring: 40 70% 50%;
+    --ring: 263 70% 65%;
 
     --radius: 0.75rem;
 
     --sidebar-background: 240 4% 9%;
     --sidebar-foreground: 48 3% 52%;
-    --sidebar-primary: 40 70% 50%;
-    --sidebar-primary-foreground: 40 10% 6%;
+    --sidebar-primary: 263 70% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 5% 13%;
     --sidebar-accent-foreground: 60 33% 95%;
     --sidebar-border: 240 4% 14%;
-    --sidebar-ring: 40 70% 50%;
+    --sidebar-ring: 263 70% 65%;
 
     --apple-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --apple-ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -75,7 +75,7 @@
   }
 
   *::selection {
-    background: rgba(250, 199, 117, 0.18);
+    background: rgba(139, 92, 246, 0.25);
     color: hsl(var(--foreground));
   }
 
@@ -270,8 +270,8 @@ body.is-scrolling,
 @layer components {
   .bg-grid-pattern {
     background-image:
-      linear-gradient(rgba(250, 199, 117, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(250, 199, 117, 0.03) 1px, transparent 1px);
+      linear-gradient(rgba(139, 92, 246, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.04) 1px, transparent 1px);
     background-size: 38px 38px;
   }
 
