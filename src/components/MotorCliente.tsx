@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { clients } from "@/lib/clients";
 import { getRecords } from "@/lib/history";
+import { cn } from "@/lib/utils";
 import {
   ArrowRight,
   Search,
@@ -31,6 +32,63 @@ const clientInitials: Record<string, string> = {
   jbs: "JB",
   natura: "NA",
 };
+
+const clientLogos: Record<string, string> = {
+  "martin-brower": "/logos/martin-brower.svg",
+  minerva: "/logos/minerva.svg",
+  danone: "/logos/danone.svg",
+  platlog: "/logos/platlog.svg",
+  jbs: "/logos/jbs.svg",
+  natura: "/logos/natura.svg",
+};
+
+function ClientLogo({
+  id,
+  initials,
+  color,
+  size = "md",
+}: {
+  id: string;
+  initials: string;
+  color: string;
+  size?: "sm" | "md";
+}) {
+  const [imgError, setImgError] = useState(false);
+  const logoSrc = clientLogos[id];
+  const hasLogo = !!logoSrc && !imgError;
+  const dim = size === "md" ? "h-12 w-12" : "h-11 w-11";
+  const textSize = size === "md" ? "text-sm" : "text-xs";
+
+  if (hasLogo) {
+    return (
+      <div className={cn("shrink-0 rounded-2xl overflow-hidden shadow-sm", dim)}>
+        <img
+          src={logoSrc}
+          alt={id}
+          className="h-full w-full object-cover"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex shrink-0 items-center justify-center rounded-2xl font-bold",
+        dim,
+        textSize,
+      )}
+      style={{
+        backgroundColor: `${color}18`,
+        color,
+        boxShadow: `inset 0 0 0 1px ${color}22`,
+      }}
+    >
+      {initials}
+    </div>
+  );
+}
 
 const normalizeText = (value: string) =>
   value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -246,16 +304,12 @@ const MotorCliente = () => {
                 <div className="relative">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex min-w-0 items-center gap-3">
-                      <div
-                        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-sm font-bold"
-                        style={{
-                          backgroundColor: `${client.color}18`,
-                          color: client.color,
-                          boxShadow: `inset 0 0 0 1px ${client.color}22`,
-                        }}
-                      >
-                        {client.initials}
-                      </div>
+                      <ClientLogo
+                        id={client.id}
+                        initials={client.initials}
+                        color={client.color}
+                        size="md"
+                      />
 
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
@@ -329,16 +383,12 @@ const MotorCliente = () => {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-start gap-3">
-                        <div
-                          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xs font-bold"
-                          style={{
-                            backgroundColor: `${client.color}16`,
-                            color: client.color,
-                            boxShadow: `inset 0 0 0 1px ${client.color}20`,
-                          }}
-                        >
-                          {client.initials}
-                        </div>
+                        <ClientLogo
+                          id={client.id}
+                          initials={client.initials}
+                          color={client.color}
+                          size="sm"
+                        />
 
                         <div className="min-w-0">
                           <p className="truncate text-[15px] font-semibold text-white">
