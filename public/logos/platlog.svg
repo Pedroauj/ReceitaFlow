@@ -1,27 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#6D28D9"/>
-      <stop offset="100%" stop-color="#4C1D95"/>
-    </linearGradient>
-  </defs>
-  <rect width="100" height="100" fill="url(#pg)"/>
-  <!-- Truck icon: cab + body -->
-  <rect x="28" y="38" width="44" height="26" rx="3" fill="white" opacity="0.95"/>
-  <path d="M 72 44 L 83 44 L 83 64 L 72 64 Z" fill="white" opacity="0.85"/>
-  <path d="M 72 44 L 80 44 L 83 51 L 72 51 Z" fill="#6D28D9"/>
-  <!-- Windows -->
-  <rect x="74" y="45.5" width="7" height="5" rx="1" fill="white" opacity="0.5"/>
-  <!-- Wheels -->
-  <circle cx="40" cy="66" r="6" fill="#6D28D9" stroke="white" stroke-width="2.5"/>
-  <circle cx="67" cy="66" r="6" fill="#6D28D9" stroke="white" stroke-width="2.5"/>
-  <!-- PLATLOG text -->
-  <text x="50" y="87"
-    font-family="'Arial Black', Arial, sans-serif"
-    font-weight="900"
-    font-size="10.5"
-    fill="white"
-    text-anchor="middle"
-    letter-spacing="1.5"
-    opacity="0.92">PLATLOG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 95">
+  <rect width="290" height="95" fill="white"/>
+
+  <!-- P icon: bold stem + bowl -->
+  <path d="M 12 10 L 52 10 Q 72 10 72 30 Q 72 50 52 50 L 26 50 L 26 80 L 12 80 Z"
+    fill="#0578C5"/>
+  <!-- Bowl hollow (cutout) -->
+  <path d="M 26 22 L 48 22 Q 58 22 58 30 Q 58 38 48 38 L 26 38 Z"
+    fill="white"/>
+
+  <!-- PlatLog text -->
+  <text x="86" y="57"
+    font-family="'Segoe UI',Arial,Helvetica,sans-serif"
+    font-weight="700"
+    font-size="42"
+    fill="#0578C5">Plat</text>
+  <text x="185" y="57"
+    font-family="'Segoe UI',Arial,Helvetica,sans-serif"
+    font-weight="700"
+    font-size="42"
+    fill="#002F6C">Log</text>
+
+  <!-- Soluções Logísticas -->
+  <text x="86" y="77"
+    font-family="'Segoe UI',Arial,Helvetica,sans-serif"
+    font-weight="400"
+    font-size="13.5"
+    fill="#5B7EA8">Soluções Logísticas</text>
 </svg>
