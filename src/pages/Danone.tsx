@@ -117,11 +117,11 @@ const Danone = () => {
           className="mb-6"
         >
           <div className="relative overflow-hidden rounded-[28px] border border-border bg-card p-6 shadow-[0_14px_40px_rgba(0,0,0,0.22)]">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.08),transparent_28%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_28%)]" />
 
             <div className="relative">
               <div className="mb-5 flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/20 bg-violet-500/10 text-violet-400">
                   <Upload className="h-5 w-5" />
                 </div>
                 <div>
@@ -133,12 +133,12 @@ const Danone = () => {
               <label
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
-                className="block cursor-pointer rounded-[22px] border border-dashed border-primary/15 bg-primary/[0.04] px-6 py-14 text-center transition-all duration-200 hover:border-primary/30 hover:bg-primary/[0.07]"
+                className="block cursor-pointer rounded-[22px] border border-dashed border-violet-500/15 bg-violet-500/[0.04] px-6 py-14 text-center transition-all duration-200 hover:border-violet-500/30 hover:bg-violet-500/[0.07]"
               >
                 {files.length > 0 ? (
                   <div className="flex items-center justify-center gap-4">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
-                      <Files className="h-6 w-6 text-primary" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-violet-500/20 bg-violet-500/10">
+                      <Files className="h-6 w-6 text-violet-400" />
                     </div>
                     <div className="text-left">
                       <p className="text-base font-semibold text-foreground">{files.length} arquivo(s) selecionado(s)</p>
@@ -147,8 +147,8 @@ const Danone = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-primary/15 bg-primary/8">
-                      <Upload className="h-8 w-8 text-primary" />
+                    <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-violet-500/15 bg-violet-500/8">
+                      <Upload className="h-8 w-8 text-violet-400" />
                     </div>
                     <p className="text-xl font-semibold text-foreground">Arraste ou clique para selecionar vários PDFs</p>
                     <p className="mt-3 text-sm text-muted-foreground">Formato aceito: .pdf</p>
@@ -167,7 +167,7 @@ const Danone = () => {
                         className="flex items-center justify-between rounded-xl border border-border bg-background/50 px-3 py-2"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <FileCheck className="h-4 w-4 shrink-0 text-primary" />
+                          <FileCheck className="h-4 w-4 shrink-0 text-violet-400" />
                           <p className="text-sm text-foreground/80 truncate" title={file.name}>{file.name}</p>
                         </div>
                         <button

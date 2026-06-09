@@ -321,7 +321,7 @@ const getStatusBadgeClass = (status: PreviewRowStatus) => {
 const sectionCardClass =
   "rounded-[28px] border border-border bg-card shadow-[0_14px_40px_rgba(0,0,0,0.22)]";
 const metricCardClass =
-  "rounded-3xl border border-border bg-muted/30 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20";
+  "rounded-3xl border border-border bg-muted/30 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-500/20";
 const metricTitleClass = "text-[11px] uppercase tracking-[0.18em] text-muted-foreground";
 const metricValueClass = "mt-2 text-2xl font-semibold tracking-tight text-foreground";
 
@@ -661,19 +661,19 @@ const Minerva = () => {
           className="mb-7"
         >
           <div className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_18px_48px_rgba(0,0,0,0.28)]">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.12),transparent_32%),radial-gradient(circle_at_bottom_right,hsl(var(--primary)/0.08),transparent_28%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.12),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.08),transparent_28%)]" />
 
             <div className="relative flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:justify-between lg:p-8">
               <div className="flex items-start gap-4">
                 <button
                   onClick={() => navigate("/dashboard")}
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-border bg-muted/50 text-muted-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/10 hover:text-primary"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-border bg-muted/50 text-muted-foreground transition-all duration-200 hover:border-violet-500/30 hover:bg-violet-500/10 hover:text-violet-400"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </button>
 
                 <div>
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-violet-400">
                     <FileSpreadsheet className="h-3.5 w-3.5" />
                     Cliente Minerva
                   </div>
@@ -692,7 +692,7 @@ const Minerva = () => {
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:w-[420px]">
                 <div className="rounded-2xl border border-border bg-muted/30 p-4 backdrop-blur-sm">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-400/80">
                     Entrada
                   </p>
                   <p className="mt-2 text-sm font-medium text-foreground">
@@ -701,7 +701,7 @@ const Minerva = () => {
                 </div>
 
                 <div className="rounded-2xl border border-border bg-muted/30 p-4 backdrop-blur-sm">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-400/80">
                     Saída
                   </p>
                   <p className="mt-2 text-sm font-medium leading-6 text-foreground">
@@ -720,11 +720,11 @@ const Minerva = () => {
           className="mb-6 grid gap-6 xl:grid-cols-[0.85fr_1.15fr]"
         >
           <div className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_14px_40px_rgba(0,0,0,0.22)]">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.08),transparent_28%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_28%)]" />
 
             <div className="relative p-6 lg:p-7">
               <div className="mb-6 flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/20 bg-violet-500/10 text-violet-400">
                   <CalendarDays className="h-5 w-5" />
                 </div>
 
@@ -747,7 +747,7 @@ const Minerva = () => {
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-foreground outline-none transition-colors focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
+                    className="h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-foreground outline-none transition-colors focus:border-violet-500/40 focus:ring-2 focus:ring-violet-500/10"
                   />
                 </div>
 
@@ -761,11 +761,11 @@ const Minerva = () => {
                     placeholder="R$ 0,00"
                     value={bankValue}
                     onChange={(e) => handleBankValueChange(e.target.value)}
-                    className="h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
+                    className="h-12 w-full rounded-xl border border-border bg-muted/50 px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-violet-500/40 focus:ring-2 focus:ring-violet-500/10"
                   />
                 </div>
 
-                <div className="rounded-2xl border border-primary/12 bg-primary/[0.05] p-4">
+                <div className="rounded-2xl border border-violet-500/12 bg-violet-500/[0.05] p-4">
                   <p className="text-sm leading-7 text-muted-foreground">
                     A importação final será gerada com FILIAL = 1, SÉRIE = 26, TIPO DOCUMENTO = CTRC
                     e DATA EMISSÃO obtida da Planilha 0.
@@ -776,7 +776,7 @@ const Minerva = () => {
                   type="button"
                   onClick={handleProcess}
                   disabled={!canProcess}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl border-0 bg-[linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/0.75))] px-5 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_hsl(var(--primary)/0.25)] transition-all duration-200 hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl border-0 bg-[linear-gradient(135deg,rgba(99,102,241,0.9),rgba(139,92,246,0.8))] px-5 text-sm font-medium text-white shadow-[0_10px_30px_rgba(139,92,246,0.25)] transition-all duration-200 hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {processing ? (
                     <>
@@ -811,11 +811,11 @@ const Minerva = () => {
                 if (f && /\.(xlsx?|xls)$/i.test(f.name)) setReportFile(f);
               }}
             >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.08),transparent_24%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_24%)]" />
 
               <div className="relative">
                 <div className="mb-5 flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/20 bg-violet-500/10 text-violet-400">
                     <UploadCloud className="h-5 w-5" />
                   </div>
 
@@ -829,11 +829,11 @@ const Minerva = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[22px] border border-dashed border-primary/15 bg-primary/[0.04] px-6 py-14 text-center transition-all duration-200 hover:border-primary/30 hover:bg-primary/[0.07]">
+                <div className="rounded-[22px] border border-dashed border-violet-500/15 bg-violet-500/[0.04] px-6 py-14 text-center transition-all duration-200 hover:border-violet-500/30 hover:bg-violet-500/[0.07]">
                   {reportFile ? (
                     <div className="flex flex-col items-center justify-center gap-4">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-primary/20 bg-primary/10">
-                        <FileCheck className="h-7 w-7 text-primary" />
+                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-violet-500/20 bg-violet-500/10">
+                        <FileCheck className="h-7 w-7 text-violet-400" />
                       </div>
 
                       <div>
@@ -845,8 +845,8 @@ const Minerva = () => {
                     </div>
                   ) : (
                     <>
-                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-primary/15 bg-primary/8">
-                        <UploadCloud className="h-8 w-8 text-primary" />
+                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] border border-violet-500/15 bg-violet-500/8">
+                        <UploadCloud className="h-8 w-8 text-violet-400" />
                       </div>
 
                       <p className="text-xl font-semibold text-foreground">
