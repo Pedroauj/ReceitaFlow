@@ -38,7 +38,7 @@ const ClientPageHeader = ({
         <div className="relative flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:justify-between lg:p-8">
           <div className="flex items-start gap-4">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/clientes")}
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-slate-400 transition-all duration-200 hover:border-violet-500/30 hover:bg-violet-500/10 hover:text-violet-300"
             >
               <ArrowLeft className="h-4 w-4" />
