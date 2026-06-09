@@ -224,7 +224,7 @@ const buildImportWorkbook = (
   ]);
 
   autoSize(importSheet, [10, 10, 18, 18, 16, 16]);
-  XLSX.utils.book_append_sheet(workbook, importSheet, "Importacao");
+  XLSX.utils.book_append_sheet(workbook, importSheet, "DOCUMENTO");
 
   if (missingDocs.length > 0) {
     const missingSheet = XLSX.utils.aoa_to_sheet([

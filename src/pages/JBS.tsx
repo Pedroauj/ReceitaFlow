@@ -458,7 +458,7 @@ const buildOutputWorkbook = (
   // ── Aba 3: Importação (somente se tudo estiver balanceado) ──
   if (allBalanced) {
     const { sheet: importSheet } = buildImportSheet(groups);
-    XLSX.utils.book_append_sheet(wb, importSheet, "Importacao");
+    XLSX.utils.book_append_sheet(wb, importSheet, "DOCUMENTO");
   }
 
   return wb;
