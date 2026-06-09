@@ -34,12 +34,12 @@ const clientInitials: Record<string, string> = {
 };
 
 const clientLogos: Record<string, string> = {
-  "martin-brower": "https://logo.clearbit.com/martin-brower.com",
-  minerva: "https://logo.clearbit.com/minervafoods.com",
-  danone: "https://logo.clearbit.com/danone.com",
-  platlog: "https://logo.clearbit.com/platlog.com.br",
-  jbs: "https://logo.clearbit.com/jbs.com",
-  natura: "https://logo.clearbit.com/natura.com",
+  "martin-brower": "/logos/martin-brower.svg",
+  minerva: "/logos/minerva.svg",
+  danone: "/logos/danone.png",
+  jbs: "/logos/jbs.png",
+  natura: "/logos/natura.png",
+  platlog: "/logos/platlog.svg",
 };
 
 function ClientLogo({
