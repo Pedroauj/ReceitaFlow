@@ -364,6 +364,6 @@ export function gerarPlanilhaFinal(
     { wch: 15 },
   ];
 
-  XLSX.utils.book_append_sheet(wb, ws, "Baixa por Aviso Bancário");
+  XLSX.utils.book_append_sheet(wb, ws, "DOCUMENTO");
   return XLSX.write(wb, { bookType: "xlsx", type: "array" });
 }

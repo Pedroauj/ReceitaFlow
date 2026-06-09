@@ -359,7 +359,7 @@ export function gerarPlanilhaPlatlog(result: PlatlogProcessingResult): ArrayBuff
     { wch: 18 },
   ];
 
-  XLSX.utils.book_append_sheet(wb, wsBaixa, "Baixa Platlog");
+  XLSX.utils.book_append_sheet(wb, wsBaixa, "DOCUMENTO");
   XLSX.utils.book_append_sheet(wb, wsConferencia, "Conferencia");
   XLSX.utils.book_append_sheet(wb, wsDescontos, "Descontos");
   XLSX.utils.book_append_sheet(wb, wsResumo, "Resumo");
