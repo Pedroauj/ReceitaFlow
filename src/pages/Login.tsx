@@ -26,19 +26,28 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      const isTimeout = error.message?.toLowerCase().includes("timeout") || error.status === 504;
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        const isTimeout = error.message?.toLowerCase().includes("timeout") || error.status === 504;
+        toast({
+          title: isTimeout ? "Servidor temporariamente indisponível" : "Erro ao entrar",
+          description: isTimeout
+            ? "O servidor está demorando para responder. Aguarde alguns segundos e tente novamente."
+            : error.message,
+          variant: "destructive",
+        });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch {
       toast({
-        title: isTimeout ? "Servidor temporariamente indisponível" : "Erro ao entrar",
-        description: isTimeout
-          ? "O servidor está demorando para responder. Aguarde alguns segundos e tente novamente."
-          : error.message,
+        title: "Erro de conexão",
+        description: "Não foi possível conectar ao servidor. Verifique sua internet e tente novamente.",
         variant: "destructive",
       });
-    } else {
-      navigate("/dashboard", { replace: true });
+    } finally {
+      setLoading(false);
     }
   };
 
