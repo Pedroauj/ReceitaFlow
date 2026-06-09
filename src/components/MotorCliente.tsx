@@ -34,12 +34,12 @@ const clientInitials: Record<string, string> = {
 };
 
 const clientLogos: Record<string, string> = {
-  "martin-brower": "/logos/martin-brower.svg",
-  minerva: "/logos/minerva.svg",
-  danone: "/logos/danone.svg",
-  platlog: "/logos/platlog.svg",
-  jbs: "/logos/jbs.svg",
-  natura: "/logos/natura.svg",
+  "martin-brower": "https://logo.clearbit.com/martin-brower.com",
+  minerva: "https://logo.clearbit.com/minervafoods.com",
+  danone: "https://logo.clearbit.com/danone.com",
+  platlog: "https://logo.clearbit.com/platlog.com.br",
+  jbs: "https://logo.clearbit.com/jbs.com",
+  natura: "https://logo.clearbit.com/natura.com",
 };
 
 function ClientLogo({
@@ -61,11 +61,16 @@ function ClientLogo({
 
   if (hasLogo) {
     return (
-      <div className={cn("shrink-0 rounded-2xl overflow-hidden shadow-sm", dim)}>
+      <div
+        className={cn(
+          "shrink-0 rounded-2xl overflow-hidden bg-white flex items-center justify-center p-1.5",
+          dim,
+        )}
+      >
         <img
           src={logoSrc}
           alt={id}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
           onError={() => setImgError(true)}
         />
       </div>
