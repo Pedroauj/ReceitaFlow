@@ -10,7 +10,7 @@ const SUPABASE_URL      = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
 // ─── URL da API ───────────────────────────────────────────────────────────────
-const TUNNEL_URL = "https://expired-ambient-leaving-barely.trycloudflare.com";
+const TUNNEL_URL = "https://textbooks-filme-saves-atmospheric.trycloudflare.com";
 
 const LOCAL_API_URL =
   ((
