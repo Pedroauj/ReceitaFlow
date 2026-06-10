@@ -326,7 +326,7 @@ const MediasAbastecimento = () => {
                     className="mt-4 flex items-center gap-2 rounded-xl border px-4 py-3 text-sm"
                     style={{ background: "rgba(248,113,113,0.08)", borderColor: "rgba(248,113,113,0.2)", color: "#fca5a5" }}
                   >
-                    <AlertCircle style={{ width: "1rem", height: "1rem", shrink: 0 }} />
+                    <AlertCircle style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />
                     {erro}
                   </div>
                 )}
