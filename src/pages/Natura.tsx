@@ -61,7 +61,7 @@ const Natura = () => {
         if (res.totalNaoEncontrados > 0) alertas.push(`${res.totalNaoEncontrados} não encontrado(s)`);
         if (res.totalSemValor > 0) alertas.push(`${res.totalSemValor} sem valor`);
         toast({ title: "Processamento concluído", description: `${res.totalEncontrados} encontrado(s)${alertas.length ? ` · ${alertas.join(" · ")}` : ""}` });
-        addRecord({ cliente: "Natura", dataProcessamento: new Date().toISOString(), dataVencimento: new Date().toISOString(), dataRecebimento: new Date().toISOString(), quantidadeDocumentos: res.totalDocumentos, valorTotal: res.totalValor, valorInformadoBanco: 0, statusConferencia: res.totalNaoEncontrados > 0 ? "diverge" : "confere", quantidadeErros: res.totalNaoEncontrados + res.totalSemValor });
+        void addRecord({ cliente: "Natura", dataProcessamento: new Date().toISOString(), dataVencimento: new Date().toISOString(), dataRecebimento: new Date().toISOString(), quantidadeDocumentos: res.totalDocumentos, valorTotal: res.totalValor, valorInformadoBanco: 0, statusConferencia: res.totalNaoEncontrados > 0 ? "diverge" : "confere", quantidadeErros: res.totalNaoEncontrados + res.totalSemValor, payload: { tipo: "natura", resultado: res } });
       }
     } catch (err) {
       console.error(err);

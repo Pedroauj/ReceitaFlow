@@ -1,8 +1,7 @@
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
 import { format, parseISO, isWithinInterval, startOfDay, endOfDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CalendarIcon, Eye, CheckCircle2, XCircle, FileSpreadsheet, Hash, DollarSign } from "lucide-react";
+import { CalendarIcon, Eye, CheckCircle2, XCircle, FileSpreadsheet, Hash, DollarSign, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,19 +9,31 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { getRecords, getStats, type HistoryRecord } from "@/lib/history";
+import { getRecords, computeStats, type HistoryRecord } from "@/lib/history";
 import { clients } from "@/lib/clients";
 import { usePagination } from "@/hooks/usePagination";
 import TablePagination from "@/components/TablePagination";
 import { motion } from "framer-motion";
 import SectionContainer from "@/components/dashboard/SectionContainer";
 import PageHeader from "@/components/dashboard/PageHeader";
+import HistoricoDetalhe from "@/components/historico/HistoricoDetalhe";
 import { History } from "lucide-react";
 
 const Historico = () => {
-  const navigate = useNavigate();
-  const records = getRecords();
-  const stats = getStats();
+  const [records, setRecords] = useState<HistoryRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const stats = useMemo(() => computeStats(records), [records]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getRecords().then((data) => {
+      if (!cancelled) {
+        setRecords(data);
+        setLoading(false);
+      }
+    });
+    return () => { cancelled = true; };
+  }, []);
 
   const [clienteFilter, setClienteFilter] = useState<string>("all");
   const [dateFrom, setDateFrom] = useState<Date>();
@@ -142,7 +153,12 @@ const Historico = () => {
           <p className="text-sm font-semibold text-foreground">Processamentos ({filtered.length})</p>
         </div>
 
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center gap-2 py-12 px-5">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">Carregando histórico...</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-12 px-5">
             <FileSpreadsheet className="h-10 w-10 mx-auto mb-3 text-muted-foreground/40" />
             <p className="text-sm text-muted-foreground">Nenhum processamento encontrado.</p>
@@ -203,40 +219,47 @@ const Historico = () => {
 
       {/* Detail Dialog */}
       <Dialog open={!!selectedRecord} onOpenChange={(open) => !open && setSelectedRecord(null)}>
-        <DialogContent className="sm:max-w-md bg-card border-border">
+        <DialogContent className="max-h-[88vh] overflow-y-auto bg-card border-border sm:max-w-5xl">
           <DialogHeader>
-            <DialogTitle className="text-sm font-semibold text-foreground">Detalhes do Processamento</DialogTitle>
+            <DialogTitle className="text-base font-semibold text-foreground">
+              {selectedRecord?.cliente} · Detalhes do Processamento
+            </DialogTitle>
           </DialogHeader>
           {selectedRecord && (
-            <div className="space-y-0">
-              {[
-                ["Cliente", selectedRecord.cliente],
-                ["Data processamento", formatDate(selectedRecord.dataProcessamento)],
-                ["Data vencimento", formatDateShort(selectedRecord.dataVencimento)],
-                ["Data recebimento", formatDateShort(selectedRecord.dataRecebimento)],
-                ["Documentos", String(selectedRecord.quantidadeDocumentos)],
-                ["Valor total", formatBRL(selectedRecord.valorTotal)],
-                ["Valor banco", formatBRL(selectedRecord.valorInformadoBanco)],
-                ["Erros", String(selectedRecord.quantidadeErros)],
-              ].map(([label, value]) => (
-                <div key={label} className="flex justify-between py-2.5 border-b border-border/50">
-                  <span className="text-[13px] text-muted-foreground">{label}</span>
-                  <span className="text-[13px] font-medium tabular-nums text-foreground">{value}</span>
-                </div>
-              ))}
-              <div className="flex justify-between py-2.5">
-                <span className="text-[13px] text-muted-foreground">Status</span>
-                <div className="flex items-center gap-1.5">
-                  {selectedRecord.statusConferencia === "confere" ? (
-                    <CheckCircle2 className="h-3.5 w-3.5 text-success-foreground" />
-                  ) : (
-                    <XCircle className="h-3.5 w-3.5 text-destructive" />
-                  )}
-                  <span className={cn("text-[13px] font-medium capitalize", selectedRecord.statusConferencia === "confere" ? "text-success-foreground" : "text-destructive")}>
-                    {selectedRecord.statusConferencia}
-                  </span>
+            <div className="space-y-5">
+              {/* Resumo do registro */}
+              <div className="grid grid-cols-2 gap-x-6 gap-y-1 rounded-xl border border-border/60 bg-muted/20 p-4 sm:grid-cols-4">
+                {[
+                  ["Processado em", formatDate(selectedRecord.dataProcessamento)],
+                  ["Vencimento", formatDateShort(selectedRecord.dataVencimento)],
+                  ["Recebimento", formatDateShort(selectedRecord.dataRecebimento)],
+                  ["Documentos", String(selectedRecord.quantidadeDocumentos)],
+                  ["Valor total", formatBRL(selectedRecord.valorTotal)],
+                  ["Valor banco", formatBRL(selectedRecord.valorInformadoBanco)],
+                  ["Erros", String(selectedRecord.quantidadeErros)],
+                ].map(([label, value]) => (
+                  <div key={label} className="py-1.5">
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{label}</p>
+                    <p className="text-[13px] font-medium tabular-nums text-foreground">{value}</p>
+                  </div>
+                ))}
+                <div className="py-1.5">
+                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Status</p>
+                  <div className="flex items-center gap-1.5">
+                    {selectedRecord.statusConferencia === "confere" ? (
+                      <CheckCircle2 className="h-3.5 w-3.5 text-success-foreground" />
+                    ) : (
+                      <XCircle className="h-3.5 w-3.5 text-destructive" />
+                    )}
+                    <span className={cn("text-[13px] font-medium capitalize", selectedRecord.statusConferencia === "confere" ? "text-success-foreground" : "text-destructive")}>
+                      {selectedRecord.statusConferencia}
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              {/* Dados completos do processamento (mesma visão da tela do cliente) */}
+              <HistoricoDetalhe record={selectedRecord} />
             </div>
           )}
         </DialogContent>

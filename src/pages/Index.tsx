@@ -10,7 +10,7 @@ import {
   ArrowUpRight, Loader2, ChevronRight, FileSpreadsheet,
   Wrench, CheckCircle2, BookOpen, Users, Sparkles, ExternalLink,
 } from "lucide-react";
-import { getRecords } from "@/lib/history";
+import { getRecords, type HistoryRecord } from "@/lib/history";
 import type { LucideIcon } from "lucide-react";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
@@ -128,7 +128,10 @@ const Index = () => {
     });
   }, [permLoading, canView, isMaster]);
 
-  const allRecords = getRecords();
+  const [allRecords, setAllRecords] = useState<HistoryRecord[]>([]);
+  useEffect(() => {
+    getRecords().then(setAllRecords);
+  }, []);
   const totalValor = allRecords.reduce((s, r) => s + r.valorTotal, 0);
   const totalDocs  = allRecords.reduce((s, r) => s + r.quantidadeDocumentos, 0);
 

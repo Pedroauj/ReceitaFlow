@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { clients } from "@/lib/clients";
-import { getRecords } from "@/lib/history";
+import { getRecords, type HistoryRecord } from "@/lib/history";
 import { cn } from "@/lib/utils";
 import {
   ArrowRight,
@@ -105,8 +105,12 @@ const formatNumber = (value: number) => new Intl.NumberFormat("pt-BR").format(va
 
 const MotorCliente = () => {
   const navigate = useNavigate();
-  const records = getRecords();
+  const [records, setRecords] = useState<HistoryRecord[]>([]);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    getRecords().then(setRecords);
+  }, []);
 
   const enrichedClients = useMemo(() => {
     return clients.map((client) => {

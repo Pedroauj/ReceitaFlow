@@ -83,7 +83,7 @@ const MartinBrower = () => {
           Math.abs(res.totalValorBruto - valorBancoNum) < 0.01
             ? "confere"
             : "diverge";
-        addRecord({
+        void addRecord({
           cliente: "Martin Brower",
           dataProcessamento: new Date().toISOString(),
           dataVencimento: dataVencimento.toISOString(),
@@ -93,6 +93,7 @@ const MartinBrower = () => {
           valorInformadoBanco: valorBancoNum,
           statusConferencia: statusConf,
           quantidadeErros: res.totalLinhasComErro,
+          payload: { tipo: "martin-brower", resultado: res },
         });
       }
       if (res.totalLinhasValidas === 0) {

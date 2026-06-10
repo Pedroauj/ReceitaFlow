@@ -69,7 +69,11 @@ const DashboardSidebar = ({ open, onClose }: DashboardSidebarProps) => {
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { canView, isMaster } = useModulePermissions();
-  const historyCount = getRecords().length;
+  const [historyCount, setHistoryCount] = useState(0);
+
+  useEffect(() => {
+    getRecords().then((records) => setHistoryCount(records.length));
+  }, []);
 
   const [profileData, setProfileData] = useState<{
     avatar_url: string | null;

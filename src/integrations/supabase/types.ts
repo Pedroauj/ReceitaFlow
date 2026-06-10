@@ -167,6 +167,51 @@ export type Database = {
         }
         Relationships: []
       }
+      processing_history: {
+        Row: {
+          cliente: string
+          data_processamento: string
+          data_recebimento: string | null
+          data_vencimento: string | null
+          id: string
+          payload: Json | null
+          quantidade_documentos: number
+          quantidade_erros: number
+          status_conferencia: string
+          user_id: string
+          valor_informado_banco: number
+          valor_total: number
+        }
+        Insert: {
+          cliente: string
+          data_processamento?: string
+          data_recebimento?: string | null
+          data_vencimento?: string | null
+          id?: string
+          payload?: Json | null
+          quantidade_documentos?: number
+          quantidade_erros?: number
+          status_conferencia?: string
+          user_id: string
+          valor_informado_banco?: number
+          valor_total?: number
+        }
+        Update: {
+          cliente?: string
+          data_processamento?: string
+          data_recebimento?: string | null
+          data_vencimento?: string | null
+          id?: string
+          payload?: Json | null
+          quantidade_documentos?: number
+          quantidade_erros?: number
+          status_conferencia?: string
+          user_id?: string
+          valor_informado_banco?: number
+          valor_total?: number
+        }
+        Relationships: []
+      }
       postos_abastecimento: {
         Row: {
           cnpj: string

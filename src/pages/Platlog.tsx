@@ -67,7 +67,7 @@ const Platlog = () => {
         toast({ title: "Nenhum documento encontrado", description: "Não foi possível extrair dados válidos da planilha da Platlog.", variant: "destructive" });
       } else {
         toast({ title: "Planilha processada com sucesso", description: `${res.totalDocumentos} documento(s) gerado(s).` });
-        addRecord({ cliente: "Platlog", dataProcessamento: new Date().toISOString(), dataVencimento: new Date().toISOString(), dataRecebimento: new Date().toISOString(), quantidadeDocumentos: res.totalDocumentos, valorTotal: res.totalValorFinal, valorInformadoBanco: 0, statusConferencia: "confere", quantidadeErros: 0 });
+        void addRecord({ cliente: "Platlog", dataProcessamento: new Date().toISOString(), dataVencimento: new Date().toISOString(), dataRecebimento: new Date().toISOString(), quantidadeDocumentos: res.totalDocumentos, valorTotal: res.totalValorFinal, valorInformadoBanco: 0, statusConferencia: "confere", quantidadeErros: 0, payload: { tipo: "platlog", resultado: res } });
       }
     } catch (error) {
       console.error(error);

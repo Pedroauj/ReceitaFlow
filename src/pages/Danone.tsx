@@ -70,7 +70,7 @@ const Danone = () => {
         toast({ title: "Nenhum documento encontrado", description: "Não foi possível extrair dados válidos dos PDFs da Danone.", variant: "destructive" });
       } else {
         toast({ title: "PDFs processados com sucesso", description: `${res.totalDocumentos} documento(s) gerado(s) em ${res.arquivosProcessados} arquivo(s).` });
-        addRecord({ cliente: "Danone", dataProcessamento: new Date().toISOString(), dataVencimento: new Date().toISOString(), dataRecebimento: new Date().toISOString(), quantidadeDocumentos: res.totalDocumentos, valorTotal: res.totalValorFinal, valorInformadoBanco: 0, statusConferencia: "confere", quantidadeErros: 0 });
+        void addRecord({ cliente: "Danone", dataProcessamento: new Date().toISOString(), dataVencimento: new Date().toISOString(), dataRecebimento: new Date().toISOString(), quantidadeDocumentos: res.totalDocumentos, valorTotal: res.totalValorFinal, valorInformadoBanco: 0, statusConferencia: "confere", quantidadeErros: 0, payload: { tipo: "danone", resultado: res } });
       }
     } catch (err) {
       console.error(err);
