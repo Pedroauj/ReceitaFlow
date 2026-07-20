@@ -40,6 +40,8 @@ function normalizeHeader(value: unknown): string {
   return String(value ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\(.*?\)/g, "")
+    .replace(/[\u00ba\u00b0\u00aa]/g, "")
     .replace(/\s+/g, "")
     .replace(/\./g, "")
     .trim()
@@ -117,7 +119,8 @@ function findHeaderRow(rows: unknown[][]): { headerRowIndex: number; headerMap: 
 
     const hasNumeroDocumento =
       headerMap["nfiscal"] !== undefined ||
-      headerMap["numero"] !== undefined;
+      headerMap["numero"] !== undefined ||
+      headerMap["ncte"] !== undefined;
 
     const hasValor =
       headerMap["vltotal"] !== undefined ||
@@ -129,7 +132,7 @@ function findHeaderRow(rows: unknown[][]): { headerRowIndex: number; headerMap: 
   }
 
   throw new Error(
-    "Não foi possível localizar as colunas N.Fiscal ou Número e Vl.Total ou Valor do pagamento na planilha."
+    "Não foi possível localizar as colunas de documento (N.Fiscal, Número ou Nº CTE) e de valor (Vl.Total ou Valor do pagamento) na planilha."
   );
 }
 
@@ -144,6 +147,9 @@ function getDocumentFromRow(row: unknown[], headerMap: HeaderMap): string {
 
   const numeroValue = toDocumentString(getCellValue(row, headerMap["numero"]));
   if (numeroValue) return numeroValue;
+
+  const cteValue = toDocumentString(getCellValue(row, headerMap["ncte"]));
+  if (cteValue) return cteValue;
 
   return "";
 }
@@ -209,8 +215,10 @@ export async function processarPlatlog(
   }
 
   const preferredSheetName =
-    workbook.SheetNames.find((name) => name.trim().toUpperCase() === "SGT") ??
-    workbook.SheetNames[0];
+    workbook.SheetNames.find((name) => {
+      const upper = name.trim().toUpperCase();
+      return upper === "SGT" || upper === "FECHAMENTO";
+    }) ?? workbook.SheetNames[0];
 
   const worksheet = workbook.Sheets[preferredSheetName];
   const rows = XLSX.utils.sheet_to_json<unknown[]>(worksheet, {
