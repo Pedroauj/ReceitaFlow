@@ -250,8 +250,15 @@ export function processarMartinBrower(
     const valorConvertido = parseValor(rawValorVal);
 
     const pagamentoVazio = isEmptyCell(rawDataPagamento);
-    if (pagamentoVazio) {
-      totalLinhasPagamentoVazio++;
+    const dataPagamentoStr = parseExcelDate(rawDataPagamento);
+    const pagamentoIgualVcto = dataPagamentoStr === dataVctoStr;
+
+    if (pagamentoVazio || pagamentoIgualVcto) {
+      if (pagamentoVazio) {
+        totalLinhasPagamentoVazio++;
+      } else {
+        totalLinhasPagamentoPreenchido++;
+      }
     } else {
       totalLinhasPagamentoPreenchido++;
       totalLinhasRemovidasPagamento++;
