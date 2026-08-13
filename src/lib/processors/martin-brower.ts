@@ -177,35 +177,41 @@ export function processarMartinBrower(
   dataVencimento: Date
 ): ProcessingResult {
   const workbook = XLSX.read(fileBuffer, { type: "array" });
-  const sheet = workbook.Sheets[workbook.SheetNames[0]];
-  const matrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
-    header: 1,
-    raw: true,
-    defval: null,
-    blankrows: false,
-  });
 
   let headerRowIndex = -1;
   let colDataVcto = -1;
   let colDataPagamento = -1;
   let colFatura = -1;
   let colValorBruto = -1;
+  let matrix: unknown[][] = [];
 
-  for (let i = 0; i < matrix.length; i++) {
-    const headerCells = (matrix[i] ?? []).map((cell) => String(cell ?? ""));
-    const dataVctoIndex = findColumnIndex(headerCells, ["Data Vcto.", "Data Vcto", "Data de Vencimento"]);
-    const dataPagamentoIndex = findColumnIndex(headerCells, ["Data de Pagamento", "Data Pagamento", "Dt Pagamento"]);
-    const faturaIndex = findColumnIndex(headerCells, ["Nº da Fatura", "No da Fatura", "Numero da Fatura", "N da Fatura"]);
-    const valorBrutoIndex = findColumnIndex(headerCells, ["Valor Bruto", "Valor"]);
+  for (const sheetName of workbook.SheetNames) {
+    const sheet = workbook.Sheets[sheetName];
+    const sheetMatrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
+      header: 1,
+      raw: true,
+      defval: null,
+      blankrows: false,
+    });
 
-    if (dataVctoIndex !== -1 && dataPagamentoIndex !== -1 && faturaIndex !== -1 && valorBrutoIndex !== -1) {
-      headerRowIndex = i;
-      colDataVcto = dataVctoIndex;
-      colDataPagamento = dataPagamentoIndex;
-      colFatura = faturaIndex;
-      colValorBruto = valorBrutoIndex;
-      break;
+    for (let i = 0; i < sheetMatrix.length; i++) {
+      const headerCells = (sheetMatrix[i] ?? []).map((cell) => String(cell ?? ""));
+      const dataVctoIndex = findColumnIndex(headerCells, ["Data Vcto.", "Data Vcto", "Data de Vencimento"]);
+      const dataPagamentoIndex = findColumnIndex(headerCells, ["Data de Pagamento", "Data Pagamento", "Dt Pagamento"]);
+      const faturaIndex = findColumnIndex(headerCells, ["Nº da Fatura", "No da Fatura", "Numero da Fatura", "N da Fatura"]);
+      const valorBrutoIndex = findColumnIndex(headerCells, ["Valor Bruto", "Valor"]);
+
+      if (dataVctoIndex !== -1 && dataPagamentoIndex !== -1 && faturaIndex !== -1 && valorBrutoIndex !== -1) {
+        headerRowIndex = i;
+        colDataVcto = dataVctoIndex;
+        colDataPagamento = dataPagamentoIndex;
+        colFatura = faturaIndex;
+        colValorBruto = valorBrutoIndex;
+        matrix = sheetMatrix;
+        break;
+      }
     }
+    if (headerRowIndex !== -1) break;
   }
 
   if (headerRowIndex === -1) {
