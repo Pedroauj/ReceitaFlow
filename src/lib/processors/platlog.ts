@@ -80,6 +80,7 @@ function toDocumentString(value: unknown): string {
 }
 
 function getRuleFromDocument(numeroDocumento: string): {
+  filial: string;
   serie: string;
   tipoDocumento: string;
 } | null {
@@ -90,6 +91,7 @@ function getRuleFromDocument(numeroDocumento: string): {
     numeroDocumento.startsWith("1")
   ) {
     return {
+      filial: "1",
       serie: "4",
       tipoDocumento: "CTRC",
     };
@@ -97,8 +99,18 @@ function getRuleFromDocument(numeroDocumento: string): {
 
   if (numeroDocumento.startsWith("2") || numeroDocumento.startsWith("3")) {
     return {
+      filial: "1",
       serie: "NFD",
       tipoDocumento: "NF",
+    };
+  }
+
+  const firstDigit = numeroDocumento[0];
+  if (firstDigit >= "4" && firstDigit <= "8") {
+    return {
+      filial: "4",
+      serie: "39",
+      tipoDocumento: "CTRC",
     };
   }
 
@@ -247,7 +259,7 @@ export async function processarPlatlog(
     if (!rule) continue;
 
     baseDocuments.push({
-      filial: "1",
+      filial: rule.filial,
       serie: rule.serie,
       numeroDocumento,
       tipoDocumento: rule.tipoDocumento,
