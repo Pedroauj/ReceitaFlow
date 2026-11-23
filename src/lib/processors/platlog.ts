@@ -132,7 +132,8 @@ function findHeaderRow(rows: unknown[][]): { headerRowIndex: number; headerMap: 
     const hasNumeroDocumento =
       headerMap["nfiscal"] !== undefined ||
       headerMap["numero"] !== undefined ||
-      headerMap["ncte"] !== undefined;
+      headerMap["ncte"] !== undefined ||
+      headerMap["ndocumento"] !== undefined;
 
     const hasValor =
       headerMap["vltotal"] !== undefined ||
@@ -144,7 +145,7 @@ function findHeaderRow(rows: unknown[][]): { headerRowIndex: number; headerMap: 
   }
 
   throw new Error(
-    "Não foi possível localizar as colunas de documento (N.Fiscal, Número ou Nº CTE) e de valor (Vl.Total ou Valor do pagamento) na planilha."
+    "Não foi possível localizar as colunas de documento (N.Fiscal, Número, Nº CTE ou N.Documento) e de valor (Vl.Total ou Valor do pagamento) na planilha."
   );
 }
 
@@ -162,6 +163,9 @@ function getDocumentFromRow(row: unknown[], headerMap: HeaderMap): string {
 
   const cteValue = toDocumentString(getCellValue(row, headerMap["ncte"]));
   if (cteValue) return cteValue;
+
+  const nDocumentoValue = toDocumentString(getCellValue(row, headerMap["ndocumento"]));
+  if (nDocumentoValue) return nDocumentoValue;
 
   return "";
 }
