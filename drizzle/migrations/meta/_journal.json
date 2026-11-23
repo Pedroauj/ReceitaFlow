@@ -15,6 +15,13 @@
       "when": 1795457385915,
       "tag": "0001_harden_postos_companies_grants",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795459078807,
+      "tag": "0002_protect_profile_admin_fields",
+      "breakpoints": true
     }
   ]
 }
