@@ -22,6 +22,13 @@
       "when": 1795459078807,
       "tag": "0002_protect_profile_admin_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795519730747,
+      "tag": "0003_lock_profile_company_rls",
+      "breakpoints": true
     }
   ]
 }
